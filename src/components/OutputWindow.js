@@ -1,4 +1,5 @@
 import React from "react";
+import CopyButton from "./CopyButton";
 
 const OutputWindow = ({ outputDetails }) => {
   const renderOutput = () => {
@@ -24,12 +25,13 @@ const OutputWindow = ({ outputDetails }) => {
     }
   };
 
+  const outputText = outputDetails ? atob(outputDetails.stdout || outputDetails.stderr || outputDetails.compile_output) : '';
+
   return (
-    <>
-      <div className="w-full h-56 bg-gray-800 rounded-md text-gray-200 font-normal text-sm overflow-y-auto">
-        {outputDetails && renderOutput()}
-      </div>
-    </>
+    <div className="relative w-full h-56 bg-gray-800 rounded-md text-gray-200 font-normal text-sm overflow-y-auto">
+      <CopyButton textToCopy={outputText} />
+      {outputDetails && renderOutput()}
+    </div>
   );
 };
 

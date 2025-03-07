@@ -14,6 +14,7 @@ import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 import CodeEditorWindow from "./CodeEditorWindow";
 
+
 const javascriptDefault = `
 
 `;
@@ -179,7 +180,8 @@ const Landing = () => {
         </div>
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
-        <div className="flex flex-col w-full h-full justify-start items-end">
+        <div className="flex flex-col w-full h-full justify-start items-end relative">
+
           <CodeEditorWindow
             code={code}
             onChange={onChange}
@@ -189,13 +191,15 @@ const Landing = () => {
         </div>
 
         <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
-          <div className="flex flex-col items-start">
-            <h1 className="font-bold text-xl text-white-800 mb-1">Custom Input</h1> {/* Reduce margin-bottom to decrease space between title and input box */}
+          <div className="flex flex-col items-start relative">
+            <h1 className="font-bold text-xl text-white-800 mb-1">Input</h1>
+
             <CustomInput
               customInput={customInput}
               setCustomInput={setCustomInput}
             />
-            <h1 className="font-bold text-xl text-white-800 mt-4 mb-2">Output</h1> {/* Add margin-top to increase gap between input box and output title */}
+            <h1 className="font-bold text-xl text-white-800 mt-4 mb-2">Output</h1>
+
             <OutputWindow outputDetails={outputDetails} />
             <button
               onClick={handleCompile}
@@ -205,7 +209,7 @@ const Landing = () => {
                 "border-[#8A8275]",
                 "border-black z-10 rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0)] px-4 py-2 hover:shadow transition duration-200",
                 !code ? "opacity-50" : "",
-                "bg-[#444444] text-[#FFFFFF] focus:outline-none" // Ensure text color is white and background color provides contrast
+                "bg-[#444444] text-[#FFFFFF] focus:outline-none"
               )}
             >
               {processing ? "Processing..." : "Compile and Execute"}

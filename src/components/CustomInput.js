@@ -30,7 +30,7 @@ const CustomInput = ({ customInput, setCustomInput }) => {
       rows="5"
       value={customInput}
       onChange={handleChange}
-      placeholder="Custom input"
+      placeholder="Custom input here"
       className={inputClasses}
       style={inputStyles}
     ></textarea>
