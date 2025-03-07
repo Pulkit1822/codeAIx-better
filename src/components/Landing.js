@@ -14,13 +14,8 @@ import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 import CodeEditorWindow from "./CodeEditorWindow";
 
-
-const javascriptDefault = `
-
-`;
-
 const Landing = () => {
-  const [code, setCode] = useState(javascriptDefault);
+  const [code, setCode] = useState("");
   const [customInput, setCustomInput] = useState("");
   const [outputDetails, setOutputDetails] = useState(null);
   const [processing, setProcessing] = useState(null);
@@ -29,6 +24,7 @@ const Landing = () => {
     label: "Oceanic Next",
   });
   const [language, setLanguage] = useState(languageOptions[0]);
+  const [fileName, setFileName] = useState("Untitled");
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -128,10 +124,27 @@ const Landing = () => {
     }
   };
 
+  // Handle imported file from GitHub
+  const handleFileImport = (fileData) => {
+    setCode(fileData.content);
+    setFileName(fileData.name);
+    
+    // Find and set the language based on the file extension
+    const fileLanguage = languageOptions.find(lang => lang.value === fileData.language);
+    if (fileLanguage) {
+      setLanguage(fileLanguage);
+    }
+    
+    showSuccessToast(`File "${fileData.name}" imported successfully!`);
+  };
+
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
       setTheme({ value: "oceanic-next", label: "Oceanic Next" })
     );
+    
+    // Expose the handleFileImport function globally for the Navbar component
+    window.handleFileImport = handleFileImport;
   }, []);
 
   const showSuccessToast = (msg) => {
@@ -171,17 +184,21 @@ const Landing = () => {
         draggable
         pauseOnHover
       />
-      <div className="flex flex-row">
-        <div className="px-4 py-2">
-          <LanguagesDropdown onSelectChange={onSelectChange} />
+      <div className="flex flex-row items-center justify-between px-4 py-2">
+        <div className="flex flex-row">
+          <div className="px-2">
+            <LanguagesDropdown onSelectChange={onSelectChange} />
+          </div>
+          <div className="px-2">
+            <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
+          </div>
         </div>
-        <div className="px-4 py-2">
-          <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
+        <div className="text-white opacity-70 text-sm">
+          {fileName}
         </div>
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end relative">
-
           <CodeEditorWindow
             code={code}
             onChange={onChange}
