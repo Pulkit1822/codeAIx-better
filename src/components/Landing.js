@@ -14,7 +14,6 @@ import ThemeDropdown from "./ThemeDropdown";
 import LanguagesDropdown from "./LanguagesDropdown";
 import CodeEditorWindow from "./CodeEditorWindow";
 
-
 const javascriptDefault = `
 
 `;
@@ -29,6 +28,8 @@ const Landing = () => {
     label: "Oceanic Next",
   });
   const [language, setLanguage] = useState(languageOptions[0]);
+  const [aiResponse, setAiResponse] = useState(null);
+  const [showAiResponse, setShowAiResponse] = useState(false);
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -158,6 +159,28 @@ const Landing = () => {
     });
   };
 
+  const handleAiRequest = async (endpoint) => {
+    setProcessing(true);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_GEMINI_API_URL}/${endpoint}`,
+        { code },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.REACT_APP_GEMINI_API_KEY}`,
+          },
+        }
+      );
+      setAiResponse(response.data);
+      setShowAiResponse(true);
+      setProcessing(false);
+    } catch (error) {
+      showErrorToast("Failed to fetch AI response");
+      setProcessing(false);
+    }
+  };
+
   return (
     <>
       <ToastContainer
@@ -178,10 +201,14 @@ const Landing = () => {
         <div className="px-4 py-2">
           <ThemeDropdown handleThemeChange={handleThemeChange} theme={theme} />
         </div>
+        <div className="px-4 py-2">
+          <button className="navbar-button" onClick={() => handleAiRequest("code-quality")}>Code Quality</button>
+          <button className="navbar-button" onClick={() => handleAiRequest("debug")}>Debug</button>
+          <button className="navbar-button" onClick={() => handleAiRequest("language-conversion")}>Language Conversion</button>
+        </div>
       </div>
       <div className="flex flex-row space-x-4 items-start px-4 py-4">
         <div className="flex flex-col w-full h-full justify-start items-end relative">
-
           <CodeEditorWindow
             code={code}
             onChange={onChange}
@@ -193,13 +220,11 @@ const Landing = () => {
         <div className="right-container flex flex-shrink-0 w-[30%] flex-col">
           <div className="flex flex-col items-start relative">
             <h1 className="font-bold text-xl text-white-800 mb-1">Input</h1>
-
             <CustomInput
               customInput={customInput}
               setCustomInput={setCustomInput}
             />
             <h1 className="font-bold text-xl text-white-800 mt-4 mb-2">Output</h1>
-
             <OutputWindow outputDetails={outputDetails} />
             <button
               onClick={handleCompile}
@@ -218,6 +243,12 @@ const Landing = () => {
           {outputDetails && <OutputDetails outputDetails={outputDetails} />}
         </div>
       </div>
+      {showAiResponse && (
+        <div className="ai-response-window">
+          <h2>AI Response</h2>
+          <pre>{JSON.stringify(aiResponse, null, 2)}</pre>
+        </div>
+      )}
     </>
   );
 };

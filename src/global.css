@@ -55,6 +55,13 @@ button {
   margin: 0; /* Remove margin to avoid shifting */
   z-index: 1000; /* Ensure the navbar is above other elements */
 }
+/* global.css */
+.ai-response-window {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
 
 .navbar-title {
   font-family: 'Press Start 2P', system-ui; /* Use Press Start 2P font for the title */
