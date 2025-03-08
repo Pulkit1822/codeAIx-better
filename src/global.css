@@ -133,3 +133,295 @@ button {
 .custom-input {
   background-color: #181A1B;
 }
+
+/* Add to global.css */
+.github-importer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  /* Glassmorphism styling */
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  padding: 20px;
+  color: #fff;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.importer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.importer-header h2 {
+  margin: 0;
+}
+
+.importer-form {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.repo-contents {
+  margin-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 15px;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.repo-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.repo-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.error-message {
+  background: rgba(255, 59, 59, 0.1);
+  border-left: 3px solid rgba(255, 59, 59, 0.7);
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 0 8px 8px 0;
+  color: #ff6b6b;
+}
+
+/* Style scrollbar for the repo contents */
+.repo-contents::-webkit-scrollbar {
+  width: 8px;
+}
+
+.repo-contents::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.repo-contents::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.repo-contents::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.current-path {
+  margin: 15px 0;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.github-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.github-icon {
+  font-size: 18px; /* Adjust size as needed */
+}
+
+/* Add these styles to your existing global.css file */
+
+.importer-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 1rem;
+}
+
+.importer-title .github-icon {
+  font-size: 22px;
+}
+
+.importer-header .navbar-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.importer-header .navbar-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.importer-form .navbar-button {
+  margin-top: 5px;
+}
+
+/* Updated Output Details Component Styling */
+.output-details-container {
+  margin-top: 1.25rem;
+  background: rgba(30, 30, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.output-details-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.details-header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.details-title {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+/* Mobile layout */
+@media (max-width: 640px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  background: rgba(42, 42, 42, 0.5);
+  border-radius: 8px;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  min-height: 60px;
+  max-height: 70px;
+}
+
+.metric-card:hover {
+  background: rgba(52, 52, 52, 0.6);
+}
+
+.metric-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+.memory-icon {
+  color: #3498db;
+}
+
+.time-icon {
+  color: #2ecc71;
+}
+
+.metric-content {
+  flex: 1;
+  min-width: 0; /* Critical for text overflow to work */
+}
+
+.metric-label {
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.15rem 0;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metric-value {
+  color: white;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-card .metric-value {
+  line-height: 1.2;
+}
+
+.counter-value {
+  transition: all 0.3s ease;
+}
+
+/* Animation styles */
+.spin-animation {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

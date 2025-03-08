@@ -2,35 +2,92 @@ import React from "react";
 import CopyButton from "./CopyButton";
 
 const OutputWindow = ({ outputDetails }) => {
-  const renderOutput = () => {
-    const statusId = outputDetails?.status?.id;
-    const decodedCompileOutput = atob(outputDetails?.compile_output);
-    const decodedStdout = atob(outputDetails?.stdout);
-    const decodedStderr = atob(outputDetails?.stderr);
-
-    const preStyles = {
-      padding: "0.5rem 1rem", // Add padding similar to the custom input window
-      whiteSpace: "pre-wrap", // Ensure long lines wrap
-    };
-
-    switch (statusId) {
-      case 6: // Compilation error
-        return <pre className="error-output" style={preStyles}>{decodedCompileOutput}</pre>;
-      case 3: // Successful output
-        return <pre className="success-output" style={preStyles}>{decodedStdout || null}</pre>;
-      case 5: // Time Limit Exceeded
-        return <pre className="error-output" style={preStyles}>Time Limit Exceeded</pre>;
-      default: // Other cases (e.g., stderr)
-        return <pre className="error-output" style={preStyles}>{decodedStderr}</pre>;
+  // Helper function to safely decode base64 strings
+  const safeAtob = (encoded) => {
+    if (!encoded) return '';
+    try {
+      return atob(encoded);
+    } catch (error) {
+      console.error("Base64 decoding failed:", error);
+      return "Error decoding output";
     }
   };
 
-  const outputText = outputDetails ? atob(outputDetails.stdout || outputDetails.stderr || outputDetails.compile_output) : '';
+  const getOutput = () => {
+    if (!outputDetails) return null;
+
+    const statusId = outputDetails?.status?.id;
+    
+    // Decode outputs only when needed
+    let output = '';
+    
+    switch (statusId) {
+      case 6: // Compilation error
+        output = safeAtob(outputDetails?.compile_output);
+        return {
+          text: output,
+          type: "error"
+        };
+      case 3: // Successful output
+        output = safeAtob(outputDetails?.stdout);
+        return {
+          text: output || "Program executed successfully with no output",
+          type: "success"
+        };
+      case 5: // Time Limit Exceeded
+        return {
+          text: "Time Limit Exceeded",
+          type: "error"
+        };
+      default:
+        // Check stderr first, then fallback to other outputs
+        if (outputDetails?.stderr) {
+          output = safeAtob(outputDetails.stderr);
+          return {
+            text: output,
+            type: "error"
+          };
+        } else if (outputDetails?.stdout) {
+          output = safeAtob(outputDetails.stdout);
+          return {
+            text: output,
+            type: "success"
+          };
+        } else if (outputDetails?.compile_output) {
+          output = safeAtob(outputDetails.compile_output);
+          return {
+            text: output,
+            type: "error"
+          };
+        } else {
+          return {
+            text: "No output available",
+            type: "info"
+          };
+        }
+    }
+  };
+
+  // Get the processed output
+  const processedOutput = getOutput();
+  
+  // Generate copy text content
+  const copyText = processedOutput?.text || '';
 
   return (
     <div className="relative w-full h-56 bg-gray-800 rounded-md text-gray-200 font-normal text-sm overflow-y-auto">
-      <CopyButton textToCopy={outputText} />
-      {outputDetails && renderOutput()}
+      <CopyButton textToCopy={copyText} />
+      {processedOutput && (
+        <pre 
+          className={`${processedOutput.type}-output`} 
+          style={{
+            padding: "0.5rem 1rem",
+            whiteSpace: "pre-wrap"
+          }}
+        >
+          {processedOutput.text}
+        </pre>
+      )}
     </div>
   );
 };

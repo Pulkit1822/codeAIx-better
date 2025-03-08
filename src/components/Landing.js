@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { classnames } from "../utils/general";
 import { languageOptions } from "../constants/languageOptions";
@@ -24,7 +24,7 @@ const Landing = () => {
     label: "Oceanic Next",
   });
   const [language, setLanguage] = useState(languageOptions[0]);
-  const [fileName, setFileName] = useState("Untitled");
+  const [fileName, setFileName] = useState("");
 
   const enterPress = useKeyPress("Enter");
   const ctrlPress = useKeyPress("Control");
@@ -124,28 +124,51 @@ const Landing = () => {
     }
   };
 
-  // Handle imported file from GitHub
-  const handleFileImport = (fileData) => {
-    setCode(fileData.content);
-    setFileName(fileData.name);
-    
-    // Find and set the language based on the file extension
-    const fileLanguage = languageOptions.find(lang => lang.value === fileData.language);
-    if (fileLanguage) {
-      setLanguage(fileLanguage);
+  // Handle imported file from GitHub - use useCallback to avoid dependency issues
+  const handleFileImport = useCallback((fileData) => {
+    if (!fileData || !fileData.content) {
+      showErrorToast('Invalid file data received');
+      return;
     }
     
-    showSuccessToast(`File "${fileData.name}" imported successfully!`);
-  };
+    try {
+      // Set the code content from the file
+      setCode(fileData.content);
+      setFileName(fileData.name || '');
+      
+      // Find and set the language based on the file extension
+      if (fileData.language) {
+        const fileExtension = fileData.language.toLowerCase();
+        const fileLanguage = languageOptions.find(lang => 
+          lang.value.toLowerCase() === fileExtension || 
+          (lang.extension && lang.extension.toLowerCase() === fileExtension)
+        );
+        
+        if (fileLanguage) {
+          setLanguage(fileLanguage);
+        }
+      }
+      
+      showSuccessToast(`File "${fileData.name || 'Unknown'}" imported successfully!`);
+    } catch (error) {
+      console.error('Error importing file:', error);
+      showErrorToast('Failed to import the file');
+    }
+  }, []);
 
   useEffect(() => {
     defineTheme("oceanic-next").then((_) =>
       setTheme({ value: "oceanic-next", label: "Oceanic Next" })
     );
     
-    // Expose the handleFileImport function globally for the Navbar component
+    // Expose the handleFileImport function globally
     window.handleFileImport = handleFileImport;
-  }, []);
+
+    // Cleanup function to remove the global reference
+    return () => {
+      window.handleFileImport = null;
+    };
+  }, [handleFileImport]); // Include handleFileImport in dependencies
 
   const showSuccessToast = (msg) => {
     toast.success(msg || `Compiled Successfully!`, {
