@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
+import ShareCodeButton from "./ShareCodeButton";
 
 const HEIGHT = "85vh";
 const WIDTH = "100%";
@@ -21,13 +22,16 @@ const CodeEditorWindow = ({ onChange, language = "c", code = "", theme = "light"
 
   return (
     <div className={editorClasses}>
+      <div className="editor-actions">
+        <ShareCodeButton code={value} language={language} />
+      </div>
       <Editor
         height={HEIGHT}
         width={WIDTH}
         language={language}
         value={value}
         theme={theme}
-        defaultValue="// Start typing your C code..."
+        defaultValue=""
         onChange={handleEditorChange}
       />
     </div>

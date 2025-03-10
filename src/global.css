@@ -63,10 +63,18 @@ button {
   background-color: #f9f9f9;
 }
 
+/* Add this style for the highlighted parts of the navbar title */
+.highlight-text {
+  color: #d57aff;
+  text-shadow: 0 0 4px rgba(213, 122, 255, 0.4); /* Very subtle glow effect */
+}
+
 .navbar-title {
   font-family: 'Press Start 2P', system-ui; /* Use Press Start 2P font for the title */
   font-size: 1.2rem; /* Adjust font size as needed */
   font-weight: 400; /* Use normal weight for the title */
+  display: flex; /* This helps with keeping the text inline */
+  align-items: center;
 }
 
 .navbar-buttons {
@@ -257,6 +265,7 @@ button {
   font-family: monospace;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
+  cursor: not-allowed; /* to show blocked cursor on hover */
 }
 
 .github-button {
@@ -359,7 +368,7 @@ button {
 }
 
 .metric-card:hover {
-  background: rgba(52, 52, 52, 0.6);
+  background: rgba(52, 52, 52, 6);
 }
 
 .metric-icon {
@@ -424,4 +433,211 @@ button {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Code action buttons - For compile, execute, and share */
+.code-action-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  border: 2px solid #8A8275;
+  border-radius: 8px;
+  background: rgba(68, 68, 68, 0.9);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+  margin-right: 12px;
+}
+
+/* This is creating the lighter background effect on hover */
+.code-action-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;  /* Increased opacity from 0.2 to 0.3 */
+  transform: translateY(2px) !important;
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1) !important;
+}
+
+/* Editor actions container */
+.editor-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+/* Code action button styling */
+.code-action-button {
+  background-color: #444444;
+  border: 2px solid #000000;
+  border-radius: 5px;
+  color: #FFFFFF;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  padding: 0;
+}
+
+/* Make the share button more visible */
+.code-action-button svg {
+  font-size: 18px;
+  display: block;
+}
+
+.code-action-button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(2px) !important;
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1) !important;
+  opacity: 1;
+}
+
+/* Share dropdown styling */
+.share-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: rgba(40, 40, 40, 0.9);
+  backdrop-filter: blur(10px);
+  border: 2px solid #000000;
+  border-radius: 8px;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+  padding: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+/* Share icon buttons - with 3D pressing design */
+.share-icon-button {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 5px;
+  border: 2px solid #000000;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+  transition: all 0.2s ease;
+  margin: 0 4px;
+}
+
+/* Tooltip styling */
+.tooltip {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none; /* Prevents tooltip from interfering with clicks */
+  z-index: 200;
+}
+
+/* Show tooltip on hover */
+.share-icon-button:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tooltip arrow */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+}
+
+/* Common hover effect for all platform buttons */
+.share-icon-button:hover {
+  transform: translateY(2px);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+}
+
+/* Platform-specific icon button colors */
+.twitter-icon {
+  background-color: #1DA1F2;
+}
+.twitter-icon:hover {
+  background-color: #1DA1F2;
+}
+
+.whatsapp-icon {
+  background-color: #25D366;
+}
+.whatsapp-icon:hover {
+  background-color: #25D366;
+}
+
+.email-icon {
+  background-color: #DB4437;
+}
+.email-icon:hover {
+  background-color: #DB4437;
+}
+
+.linkedin-icon {
+  background-color: #0077B5;
+}
+.linkedin-icon:hover {
+  background-color: #0077B5;
+}
+
+.facebook-icon {
+  background-color: #4267B2;
+}
+.facebook-icon:hover {
+  background-color: #4267B2;
+}
+
+.copy-icon {
+  background-color: #6E6E6E;
+}
+.copy-icon:hover {
+  background-color: #6E6E6E;
+}
+
+/* Native share button - with orange color */
+.native-icon {
+  background-color: #FF7900;
+}
+.native-icon:hover {
+  background-color: #FF7900;
+}
+
+/* X (formerly Twitter) icon button */
+.x-icon {
+  background-color: #000000;
+}
+.x-icon:hover {
+  background-color: #000000;
+}
+.x-icon svg {
+  font-weight: bold;
+  transform: scale(1.2);
+}
+
+/* Share code container */
+.share-code-container {
+  position: relative;
 }

@@ -72,15 +72,6 @@ const GitHubImporter = ({ onFileSelect, onClose }) => {
       </div>
       
       <div className="importer-form">
-        <div className="form-group">
-          <label>GitHub Token (optional):</label>
-          <input 
-            type="password" 
-            value={token} 
-            onChange={handleTokenChange}
-            placeholder="For private repositories" 
-          />
-        </div>
         
         <div className="form-group">
           <label>Repository Owner:</label>

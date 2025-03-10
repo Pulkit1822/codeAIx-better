@@ -15,7 +15,7 @@ const Navbar = () => {
   return (
     <>
       <nav className="navbar">
-        <div className="navbar-title">CodeAIx</div>
+        <div className="navbar-title">Code<span className="highlight-text">AI</span>x</div>
         <div className="navbar-buttons">
           <button 
             className="navbar-button github-button"

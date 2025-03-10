@@ -2,11 +2,19 @@ import React from "react";
 import CopyButton from "./CopyButton";
 
 const OutputWindow = ({ outputDetails }) => {
-  // Helper function to safely decode base64 strings
+  // Helper function to safely decode base64 strings with UTF-8 support
   const safeAtob = (encoded) => {
     if (!encoded) return '';
     try {
-      return atob(encoded);
+      // Decode base64 to binary, then handle UTF-8 characters properly
+      const binary = atob(encoded);
+      const bytes = new Uint8Array(binary.length);
+      
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      
+      return new TextDecoder('utf-8').decode(bytes);
     } catch (error) {
       console.error("Base64 decoding failed:", error);
       return "Error decoding output";
